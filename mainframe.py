@@ -137,17 +137,23 @@ style.configure("Treeview.Heading", font=('Century Gothic', 13,'bold underline')
 style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
 style.map('Treeview', background=[('selected', '#ed6d31')])
 
-mytree = ttk.Treeview(employeeframe,columns=("name","id",'department'))
+mytree = ttk.Treeview(employeeframe,columns=("name","id",'department','salary','city','phno'))
 mytree.column("#0",width=50,minwidth=50)
 mytree.column('name',width=120,anchor=W)
 mytree.column('id',width=50,anchor=CENTER)
 mytree.column('department',width=120,anchor=W)
+mytree.column('salary',width=100,anchor=W)
+mytree.column('city',width=140,anchor=W)
+mytree.column('phno',width=140,anchor=W)
 
 
 mytree.heading('#0',text='Sl.no')
 mytree.heading('name',text='Name',anchor=W)
 mytree.heading('id',text='ID')
 mytree.heading('department',text='Department',anchor=W)
+mytree.heading('salary',text='Salary',anchor=W)
+mytree.heading('city',text='City',anchor=W)
+mytree.heading('phno',text='PH.NO',anchor=W)
 
 def updatelist():
     for x in mytree.get_children():
