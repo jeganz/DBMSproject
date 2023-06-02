@@ -3,8 +3,58 @@ from tkinter import *
 import customtkinter
 from PIL import Image, ImageTk
 import ctypes as ct
+import mysql.connector
+import test
 
+#connection to mysql
+def create_connection():
+    #Used to connect Python with MySQL
+    con = mysql.connector.connect(\
+          host = "localhost",\
+          user = "root",
+          password = "may@2023")
+    cur = con.cursor()
+    strSQL = "show databases"
+    cur.execute(strSQL)
+    r = cur.fetchall()
+    if ("mkmartdb",) in r:
+        pass
+    else:  #Till here
+        strSQL = "create database mkmartdb;"
+        cur.execute(strSQL)
+    strSQL = "select database();"
+    cur.execute(strSQL)
+    r = cur.fetchall()
+    if r in ("mkmartdb",):
+        pass
+    else:
+        strSQL = "use mkmartdb;"
+        cur.execute(strSQL)
+    strSQL = "show tables;"
+    cur.execute(strSQL)
+    r = cur.fetchall()
+    if ("employee",) in r:
+        pass
+    else:
+        strSQL = "create table employee("\
+                "empid int(5) primary key,name varchar(20),pass varchar(20),"\
+                "admin varchar(10) default 'no',salary float(20),"\
+                "phone_no varchar(50),city varchar(20),department varchar(20));"
+        cur.execute(strSQL)
+        strSQL="insert into employee values(007,null,'000','yes',null,null,null,null);"
+        cur.execute(strSQL)
+        con.commit()
+    if ("item",) in r:
+        pass
+    else:
+        strSQL = "create table item("\
+                "barcode varchar(20) primary key,name varchar(20),"\
+                "category varchar(20),price float(20),"\
+                "stock int);"
+        cur.execute(strSQL)
+    return con, cur
 
+#con,cur=create_connection()
 customtkinter.set_appearance_mode("light")
 
 def CustomerChange():
@@ -27,18 +77,61 @@ def MainChange():
     Admin.place_forget()
 
 def AdminLogin():
+    InvPass.place_forget()
+    InvUser.place_forget()
+    NotAdmin.place_forget()
     L = [entryAdmin.get(), entryPassA.get()]
-    print(L[0], L[1])
+    con,cur=create_connection()
+    cur.execute("select * from employee where empid=%s;",(int(L[0]),))
+    r=cur.fetchone()
+    if r is None:
+        entryAdmin.configure(border_color='red')
+        LoginAdmin.focus_set()
+        entryAdmin.bind('<FocusIn>',lambda e:entryAdmin.configure(border_color='gray'))
+        InvUser.place(relx = 0.5, y = 300,anchor=CENTER)
+    elif r[2] == L[1] and r[3]=="yes":
+       test.adminpage(root,L[0],create_connection)
+    elif r[2] == L[1] and r[3]=="no":
+       NotAdmin.place(relx = 0.5, y = 300,anchor=CENTER)
+    else:
+        entryPassA.configure(border_color='red')
+        LoginAdmin.focus_set()
+        entryPassA.bind('<FocusIn>',lambda e:entryPassA.configure(border_color='gray'))
+        InvPass.place(relx = 0.5, y = 300,anchor=CENTER)
+    con.close()
+
 
 def EmployeeLogin():
+    InvUserE.place_forget()
+    InvPassE.place_forget()
     L = [entryEmp.get(), entryPasse.get()]
-    print(L[0], L[1])
+    con,cur=create_connection()
+    cur.execute("select * from employee where empid=%s;",(int(L[0]),))
+    r=cur.fetchone()
+    if r is None:
+        entryEmp.configure(border_color='red')
+        LoginEmp.focus_set()
+        entryEmp.bind('<FocusIn>',lambda e:entryEmp.configure(border_color='gray'))
+        InvUserE.place(relx = 0.5, y = 300,anchor=CENTER)
+    elif r[2] == L[1]:
+       print("User has logged in!!!")
+    else:
+        entryPasse.configure(border_color='red')
+        LoginEmp.focus_set()
+        entryPasse.bind('<FocusIn>',lambda e:entryPasse.configure(border_color='gray'))
+        InvPassE.place(relx = 0.5, y = 300,anchor=CENTER)
+    con.close()  
 
 def clearTF():
     entryAdmin.delete(0,END)
     entryPassA.delete(0,END)
     entryEmp.delete(0,END)
     entryPasse.delete(0,END)
+    InvUserE.place_forget()
+    InvPassE.place_forget()
+    InvPass.place_forget()
+    InvUser.place_forget()
+    NotAdmin.place_forget()
 
 def dark_title_bar(window):
     window.update()
@@ -55,6 +148,8 @@ def dark_title_bar(window):
 
 # Create object
 root = Tk()
+con,cor=create_connection()
+con.close()
 
 # Adjust size
 root.geometry("1000x500+100+100")
@@ -110,45 +205,45 @@ label.place(x = 90, y = 50)
 
 
 
-# Create Frame Customer
+# # Create Frame Customer
 
-#Login label
-label2 = customtkinter.CTkLabel(master=Customer, text="Log into your account", width=350, height=50,
-                                font=("Century Gothic", 25, "bold"), corner_radius=8)
-label2.place(relx = 0.5, y = 50, anchor=CENTER)
+# #Login label
+# label2 = customtkinter.CTkLabel(master=Customer, text="Log into your account", width=350, height=50,
+#                                 font=("Century Gothic", 25, "bold"), corner_radius=8)
+# label2.place(relx = 0.5, y = 50, anchor=CENTER)
 
-#Customer Username and textfield
-CusUser = customtkinter.CTkLabel(master=Customer, text="USERNAME:", width=120, height=50, 
-                                font=("Century Gothic", 16), corner_radius=8)
-CusUser.place(x = 35, y = 125)
-entryUser = customtkinter.CTkEntry(master=Customer,
-                               width=200, height=25, corner_radius=10)
-entryUser.place(x = 170, y = 135)
+# #Customer Username and textfield
+# CusUser = customtkinter.CTkLabel(master=Customer, text="USERNAME:", width=120, height=50, 
+#                                 font=("Century Gothic", 16), corner_radius=8)
+# CusUser.place(x = 35, y = 125)
+# entryUser = customtkinter.CTkEntry(master=Customer,
+#                                width=200, height=25, corner_radius=10)
+# entryUser.place(x = 170, y = 135)
 
-#Customer Password and textfield
-CusPass = customtkinter.CTkLabel(master=Customer, text="PASSWORD:", width=120, height=50, 
-                                font=("Century Gothic", 16), corner_radius=8)
-CusPass.place(x = 35, y = 200)
-entryPass = customtkinter.CTkEntry(master=Customer,
-                               width=200, height=25, corner_radius=10)
-entryPass.place(x = 170, y = 210)
+# #Customer Password and textfield
+# CusPass = customtkinter.CTkLabel(master=Customer, text="PASSWORD:", width=120, height=50, 
+#                                 font=("Century Gothic", 16), corner_radius=8)
+# CusPass.place(x = 35, y = 200)
+# entryPass = customtkinter.CTkEntry(master=Customer,
+#                                width=200, height=25, corner_radius=10)
+# entryPass.place(x = 170, y = 210)
 
-#login Button
-Login = customtkinter.CTkButton(master=Customer, text="LOGIN")
-Login.place(x = 150, y = 275)
+# #login Button
+# Login = customtkinter.CTkButton(master=Customer, text="LOGIN")
+# Login.place(x = 150, y = 275)
 
-# Register
-RegisterLabel = customtkinter.CTkLabel(master=Customer, text="Not a User?", width=165, height=50,
-                                corner_radius=8)
-RegisterLabel.place(x = 125, y = 350)
-Register = customtkinter.CTkButton(master=Customer,
-                                fg_color="lightblue", text="Register")
-Register.place(x = 150, y = 400)
+# # Register
+# RegisterLabel = customtkinter.CTkLabel(master=Customer, text="Not a User?", width=165, height=50,
+#                                 corner_radius=8)
+# RegisterLabel.place(x = 125, y = 350)
+# Register = customtkinter.CTkButton(master=Customer,
+#                                 fg_color="lightblue", text="Register")
+# Register.place(x = 150, y = 400)
 
-#Back button
-Back = customtkinter.CTkButton(master=Customer, fg_color="transparent", text="", image=back, corner_radius =20,
-                               width=30,command=MainChange)
-Back.place(x = 10, y = 10)
+# #Back button
+# Back = customtkinter.CTkButton(master=Customer, fg_color="transparent", text="", image=back, corner_radius =20,
+#                                width=30,command=MainChange)
+# Back.place(x = 10, y = 10)
 
 
 
@@ -179,13 +274,20 @@ entryPasse.place(x = 170, y = 240)
 #login Button
 LoginEmp = customtkinter.CTkButton(master=Employee, text="LOGIN", fg_color="#ed6d31", command=EmployeeLogin,
                                      font=("Century Gothic", 16, "bold"))
-LoginEmp.place(relx = 0.5, y = 325, anchor=CENTER)
+LoginEmp.place(relx = 0.5, y = 350, anchor=CENTER)
 
 #Back button
 Back = customtkinter.CTkButton(master=Employee, fg_color="transparent", text="", image=back,
                                 corner_radius =20,width=30,command=MainChange)
 Back.place(x = 10, y = 10)
 
+warn = ImageTk.PhotoImage(Image.open("warningicon.png").resize((25,25)))
+InvPassE = customtkinter.CTkLabel(master=Employee, text=" INVALID PASSWORD", width=150,image=warn,compound='left',
+                                  height=30, font=("Century Gothic", 16, "bold"), corner_radius=8,
+                                  text_color="red", fg_color="transparent", bg_color="transparent")
+InvUserE = customtkinter.CTkLabel(master=Employee, text=" USER NOT FOUND", width=150,image=warn,compound='left',
+                                  height=30, font=("Century Gothic", 16,'bold'), corner_radius=8,
+                                  text_color="red", fg_color="transparent", bg_color="transparent")
 
 
 
@@ -213,12 +315,23 @@ entryPassA.place(x = 170, y = 240)
 #login Button
 LoginAdmin = customtkinter.CTkButton(master=Admin, text="LOGIN", fg_color="#ed6d31",
                                      font=("Century Gothic", 16, "bold"), command=AdminLogin)
-LoginAdmin.place(relx = 0.5, y = 325, anchor=CENTER)
+LoginAdmin.place(relx = 0.5, y = 350, anchor=CENTER)
 
 #Back button
 Back = customtkinter.CTkButton(master=Admin, fg_color="transparent", text="", image=back,
                                 corner_radius =20, width=30,command=MainChange)
 Back.place(x = 10, y = 10)
+
+InvPass = customtkinter.CTkLabel(master=Admin, text=" INVALID PASSWORD", width=150,image=warn,compound='left', 
+                                height=30, font=("Century Gothic", 16, "bold"), corner_radius=8,
+                                text_color="red", fg_color="transparent", bg_color="transparent")
+InvUser = customtkinter.CTkLabel(master=Admin, text=" USER NOT FOUND", width=150,image=warn,compound='left',
+                                height=30, font=("Century Gothic", 16, "bold"), corner_radius=8,
+                                text_color="red", fg_color="transparent", bg_color="transparent")
+NotAdmin = customtkinter.CTkLabel(master=Admin, text=" NOT AN ADMIN ID", width=150,image=warn,compound='left',
+                                height=30, font=("Century Gothic", 16, "bold"), corner_radius=8,
+                                text_color="red", fg_color="transparent", bg_color="transparent")
+
 
 
 
