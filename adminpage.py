@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import ctypes as ct
 import mysql.connector
 import itempage
+import profilepage
 
 class adminpage:
     def __init__(self,root, userID,create_connection):
@@ -114,7 +115,7 @@ class adminpage:
 
         profileframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
         profileframe.place(x=230,y=27.5)
-        customtkinter.CTkLabel(profileframe,text_color='red',text="profile page").place(x=400,y=200)
+        profilepage.profileframe(profileframe)
 
         #itempage
         itemframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
