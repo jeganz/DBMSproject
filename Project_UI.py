@@ -4,7 +4,7 @@ import customtkinter
 from PIL import Image, ImageTk
 import ctypes as ct
 import mysql.connector
-import test
+import adminpage
 
 #connection to mysql
 def create_connection():
@@ -12,7 +12,7 @@ def create_connection():
     con = mysql.connector.connect(\
           host = "localhost",\
           user = "root",
-          password = "may@2023")
+          password = "jegan@2002")
     cur = con.cursor()
     strSQL = "show databases"
     cur.execute(strSQL)
@@ -90,7 +90,7 @@ def AdminLogin():
         entryAdmin.bind('<FocusIn>',lambda e:entryAdmin.configure(border_color='gray'))
         InvUser.place(relx = 0.5, y = 300,anchor=CENTER)
     elif r[2] == L[1] and r[3]=="yes":
-       test.adminpage(root,L[0],create_connection)
+       adminpage.adminpage(root,L[0],create_connection)
     elif r[2] == L[1] and r[3]=="no":
        NotAdmin.place(relx = 0.5, y = 300,anchor=CENTER)
     else:

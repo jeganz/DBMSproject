@@ -127,6 +127,7 @@ class adminpage:
 
         data=list()
         def fetchdata():
+            data.clear()
             con,cur=create_connection()
             strsql="select * from employee"
             cur.execute(strsql)
@@ -135,7 +136,7 @@ class adminpage:
             con.close()
             for i in r:
                 data.append(i)
-        fetchdata()
+        # fetchdata()
         style = ttk.Style()
         style.theme_use('clam')
         style.configure("Treeview", font=('Century Gothic', 11),background='#E5E5E5',rowheight=30,) # Modify the font of the body
@@ -162,6 +163,7 @@ class adminpage:
         mytree.heading('phno',text='PH.NO',anchor=W)
 
         def updatelist():
+            fetchdata()
             for x in mytree.get_children():
                 mytree.delete(x)
             count=0
@@ -309,8 +311,7 @@ class adminpage:
             passentry.bind('<FocusOut>',leave)
 
             def addempsubmit():
-                data.append([nameentry.get(),int(identry.get()),deptentry.get()])
-
+                # data.append([nameentry.get(),int(identry.get()),deptentry.get()])
                 L = (int(identry.get()),nameentry.get(), passentry.get(),adminbut.get(),float(salentry.get()),phnoentry.get()
                      ,cityentry.get(),deptentry.get())
                 con,cur=create_connection()
