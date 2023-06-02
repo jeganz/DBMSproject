@@ -77,7 +77,8 @@ class adminpage:
         adminpage.pack(fill=BOTH,expand=1)
 
         #sidebar of admin login page
-
+        def adminlogout():
+            adminpage.pack_forget()
         sidebar = Canvas(master=adminpage,width=1000,height=500,background='#000000')
         sidebar.place(x=-2,y=-2)
         
@@ -102,7 +103,8 @@ class adminpage:
 
         logouticon =ImageTk.PhotoImage(Image.open("logouticon.png"))
         logouticon2 =ImageTk.PhotoImage(Image.open("logouticon2.png"))
-        logoutbutton = customtkinter.CTkButton(master=sidebar,image=logouticon,text='',corner_radius=10,hover_color='#000000',fg_color='transparent',width=35,font=('Century Gothic',15))
+        logoutbutton = customtkinter.CTkButton(master=sidebar,image=logouticon,text='',corner_radius=10,command=adminlogout,
+                                        hover_color='#000000',fg_color='transparent',width=35,font=('Century Gothic',15))
         logoutbutton.place(x=1,y=462)
         logoutbutton.bind('<Enter>',enter)
         logoutbutton.bind('<Leave>',leave)

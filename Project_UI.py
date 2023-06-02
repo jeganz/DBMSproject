@@ -90,6 +90,7 @@ def AdminLogin():
         entryAdmin.bind('<FocusIn>',lambda e:entryAdmin.configure(border_color='gray'))
         InvUser.place(relx = 0.5, y = 300,anchor=CENTER)
     elif r[2] == L[1] and r[3]=="yes":
+       MainChange()
        adminpage.adminpage(root,L[0],create_connection)
     elif r[2] == L[1] and r[3]=="no":
        NotAdmin.place(relx = 0.5, y = 300,anchor=CENTER)
