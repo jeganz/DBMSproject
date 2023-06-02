@@ -6,8 +6,8 @@ import ctypes as ct
 
 class profileframe:
     def __init__(self,profileframe):
-        # profilepic =ImageTk.PhotoImage(Image.open("profileicon.png").resize((100,100)))
-        # customtkinter.CTkLabel(profileframe,image=profilepic,text="").place(x=620,y=30)
+        profilepic =ImageTk.PhotoImage(Image.open("profileicon.png").resize((100,100)))
+        customtkinter.CTkLabel(profileframe,image=profilepic,text="").place(x=620,y=30)
         namel=customtkinter.CTkLabel(profileframe,text='JAMES BOND',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 18,'bold'))
         namel.place(x=250,y=50)
         namel1=customtkinter.CTkLabel(profileframe,text='ID',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
