@@ -68,7 +68,7 @@ class itempage:
                 mytree.delete(x)
             count=0
             for i in data:
-                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[4],i[3]))
+                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
                 count+=1
         updatelist()
         mytree.place(x=10,y=40)
