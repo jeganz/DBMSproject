@@ -119,7 +119,7 @@ class adminpage:
 
         #itempage
         itemframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
-        itempage.itempage(itemframe)
+        itempage.itempage(itemframe,create_connection)
 
         #employeepage
         

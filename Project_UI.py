@@ -12,7 +12,7 @@ def create_connection():
     con = mysql.connector.connect(\
           host = "localhost",\
           user = "root",
-          password = "ukpmex")
+          password = "jegan@2002")
     cur = con.cursor()
     strSQL = "show databases"
     cur.execute(strSQL)

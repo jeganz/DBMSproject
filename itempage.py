@@ -63,11 +63,12 @@ class itempage:
         mytree.heading('Price',text='MRP',anchor=W)
 
         def updatelist():
+            fetchdata()
             for x in mytree.get_children():
                 mytree.delete(x)
             count=0
             for i in data:
-                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[3],i[4]))
+                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[4],i[3]))
                 count+=1
         updatelist()
         mytree.place(x=10,y=40)
