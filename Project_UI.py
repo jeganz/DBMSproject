@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 import ctypes as ct
 import mysql.connector
 import adminpage
+import empframe
 
 #connection to mysql
 def create_connection():
@@ -115,7 +116,8 @@ def EmployeeLogin():
         entryEmp.bind('<FocusIn>',lambda e:entryEmp.configure(border_color='gray'))
         InvUserE.place(relx = 0.5, y = 300,anchor=CENTER)
     elif r[2] == L[1]:
-       print("User has logged in!!!")
+       MainChange()
+       empframe.empframe(root,create_connection)
     else:
         entryPasse.configure(border_color='red')
         LoginEmp.focus_set()
