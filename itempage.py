@@ -4,10 +4,10 @@ from tkinter import ttk
 import customtkinter
 from PIL import Image, ImageTk
 import ctypes as ct
+import mysql.connector 
 
 class itempage:
-    def __init__(self,itemframe):
-         
+    def __init__(self,itemframe,create_connection):
         def dark_title_bar(window):
             window.update()
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20
@@ -27,8 +27,18 @@ class itempage:
         heading=customtkinter.CTkLabel(itemframe,text='Item Details',font=('Century Gothic', 18,'bold','underline'),width=100,text_color='black')
         heading.place(x=14,y=10)
 
-        data=[['abc',1,'stationary',12,87],['bcd',2,'vegtable',5,75],['drf',3,'vegetable',7,120]
-            ]
+        data=list()
+        def fetchdata():
+            data.clear()
+            con,cur=create_connection()
+            strsql="select * from item"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            con.commit()
+            con.close()
+            for i in r:
+                data.append(i)
+        # fetchdata()
 
         style = ttk.Style()
         style.theme_use('clam')
@@ -159,7 +169,13 @@ class itempage:
             catentry.bind('<FocusIn>',enter)
             catentry.bind('<FocusOut>',leave)
             def addempsubmit():
-                data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
+                # data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
+                L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
+                con,cur=create_connection()
+                strsql="insert into item values(%s,%s,%s,%s,%s)"
+                cur.execute(strsql,L)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             addempbut=customtkinter.CTkButton(bg,text='SUBMIT',font=('Century Gothic', 15,'bold'),
