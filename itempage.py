@@ -230,7 +230,7 @@ class itempage:
                                                 height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
             
 
-            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Employee not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
         
             def enter(e):
                 nameentry.configure(border_color='#ed6d31')
@@ -255,19 +255,16 @@ class itempage:
                 cur.execute(strsql)
                 r=cur.fetchone()
                 con.close()
-                flag=0
-                for i in data:
-                    if id in i:
-                        labels('NAME',1,6,r[1])
-                        labels('CODE',1,36,r[0])
-                        labels('PRICE',1,66,r[3])
-                        labels('CATEG',1,96,r[2])
-                        eksbut.place(x=310,y=122)
-                        tickbut.place(x=260,y=122)
-                        rl.place(x=1,y=126)
-                        flag=1
-                if flag==0:
-                    notfound.place(x=80,y=10)
+                if r != None:
+                    labels('NAME',1,6,r[1])
+                    labels('CODE',1,36,r[0])
+                    labels('PRICE',1,66,r[3])
+                    labels('CATEG',1,96,r[2])
+                    eksbut.place(x=310,y=122)
+                    tickbut.place(x=260,y=122)
+                    rl.place(x=1,y=126)
+                else:
+                    notfound.place(relx=0.5,y=70,anchor=CENTER)
 
                 
                 infoemp.place(x=75,y=270)
@@ -438,9 +435,14 @@ class itempage:
                 eksbut.place(x=320,y=190)
                 tickbut.place(x=270,y=190)
                 
-                infoemp.place(x=65,y=230)
+                
 
             def searchitem():
+                inameentry.delete(0,END)
+                codeentry.delete(0,END)
+                qtyentry.delete(0,END)
+                mrpentry.delete(0,END)
+                catentry.delete(0,END)
                 for i in infoemp.winfo_children():
                     i.place_forget()
                 id=searchentry.get()
@@ -449,16 +451,17 @@ class itempage:
                 cur.execute(strsql)
                 r=cur.fetchone()
                 con.close()
-                flag=0
-                placeall()
-                inameentry.insert(0,r[1])
-                codeentry.insert(0,r[0])
-                qtyentry.insert(0,r[4])
-                mrpentry.insert(0,r[3])
-                catentry.insert(0,r[2])
-                codeentry.configure(state=DISABLED)
-                flag=1
-                
+                if r != None:
+                    placeall()
+                    inameentry.insert(0,r[1])
+                    codeentry.insert(0,r[0])
+                    qtyentry.insert(0,r[4])
+                    mrpentry.insert(0,r[3])
+                    catentry.insert(0,r[2])
+                    codeentry.configure(state=DISABLED)
+                else:
+                    notfound.place(relx=.5,y=70,anchor=CENTER)
+            infoemp.place(x=65,y=230)    
 
             searchbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
                                                 fg_color='#ed6d31',text_color='black',image=search,width=40,
