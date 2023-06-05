@@ -24,12 +24,28 @@ search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
 tick=ImageTk.PhotoImage(Image.open('tickicon.png').resize((25,25)))
 eks=ImageTk.PhotoImage(Image.open('eksicon.png').resize((25,25)))
 warning=ImageTk.PhotoImage(Image.open('warningicon.png'))
+errimg=ImageTk.PhotoImage(Image.open('warningicon.png').resize((50,50)))
 
 bg=customtkinter.CTkLabel(r,text='',image=img)
 bg.place(x=0,y=0)
 
 infoemp=customtkinter.CTkFrame(bg,width=370,height=230,bg_color='#d9d9d9',fg_color='#d9d9d9')
+err=customtkinter.CTkFrame(bg,width=370,height=250,bg_color='#d9d9d9',fg_color='#d9d9d9',)
 
+erricon=customtkinter.CTkLabel(err,image=errimg,compound=TOP,text='error',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+erricon.place(relx=.5,y=70,anchor=CENTER)
+
+errmsg=customtkinter.CTkLabel(err,text='Given image is not CTkImage but. Image can not be scaled on HighDPI displays, use CTkImage instead.',
+                              text_color='red',fg_color='green',font=('Century Gothic', 12),anchor='w',wraplength=300)
+errmsg.place(relx=.5,y=170,anchor=CENTER)
+
+def showmore(e):
+    print("hi")
+
+show=customtkinter.CTkLabel(err,compound=RIGHT,text='error',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+show.place(relx=.5,y=120,anchor=CENTER)
+show.bind("<Button-1>",showmore)
+err.place(x=65,y=230)
 def enter(e):
     inameentry.configure(border_color='#ed6d31')
     l1.configure(text_color='#ed6d31')
