@@ -210,10 +210,12 @@ class itempage:
             rl=customtkinter.CTkLabel(infoemp,text='REMOVE THIS ITEM ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
             
             def delconfirm():
-                id=int(nameentry.get())
-                for i in data:
-                    if id in i:
-                        data.remove(i)
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="delete from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             def delcancel():
@@ -247,14 +249,19 @@ class itempage:
             def searchemp():
                 for i in infoemp.winfo_children():
                     i.place_forget()
-                id=int(nameentry.get())
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="select * from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                r=cur.fetchone()
+                con.close()
                 flag=0
                 for i in data:
                     if id in i:
-                        labels('NAME',1,6,i[0])
-                        labels('CODE',1,36,i[1])
-                        labels('PRICE',1,66,i[3])
-                        labels('CATEG',1,96,i[2])
+                        labels('NAME',1,6,r[1])
+                        labels('CODE',1,36,r[0])
+                        labels('PRICE',1,66,r[3])
+                        labels('CATEG',1,96,r[2])
                         eksbut.place(x=310,y=122)
                         tickbut.place(x=260,y=122)
                         rl.place(x=1,y=126)
@@ -280,7 +287,7 @@ class itempage:
             r.geometry('500x500')
             r.title('Add new employee')
 
-            img=ImageTk.PhotoImage(Image.open('delitemform.png'))
+            img=ImageTk.PhotoImage(Image.open('moditemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
             tick=ImageTk.PhotoImage(Image.open('tickicon.png').resize((25,25)))
             eks=ImageTk.PhotoImage(Image.open('eksicon.png').resize((25,25)))
@@ -379,10 +386,13 @@ class itempage:
             rl=customtkinter.CTkLabel(infoemp,text='SAVE THE CHANGES ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def delconfirm():
-                id=int(searchentry.get())
-                for i in data:
-                    if id in i:
-                        data.remove(i)
+                id=searchentry.get()
+                con,cur=create_connection()
+                strsql="update item set name='"+inameentry.get()+"',category='"+catentry.get()+"'"\
+                        ",price="+mrpentry.get()+",stock="+qtyentry.get()+" where barcode='"+id+"';"
+                cur.execute(strsql)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             def delcancel():
@@ -397,7 +407,7 @@ class itempage:
                                                 height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
 
 
-            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Employee not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def enter(e):
                 searchentry.configure(border_color='#ed6d31')
@@ -433,18 +443,21 @@ class itempage:
             def searchitem():
                 for i in infoemp.winfo_children():
                     i.place_forget()
-                id=int(searchentry.get())
+                id=searchentry.get()
+                con,cur=create_connection()
+                strsql="select * from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                r=cur.fetchone()
+                con.close()
                 flag=0
-                for i in data:
-                    if id == i[1]:
-                        placeall()
-                        inameentry.insert(0,i[0])
-                        codeentry.insert(0,i[1])
-                        qtyentry.insert(0,i[3])
-                        mrpentry.insert(0,i[4])
-                        catentry.insert(0,i[2])
-                        codeentry.configure(state=DISABLED)
-                        flag=1
+                placeall()
+                inameentry.insert(0,r[1])
+                codeentry.insert(0,r[0])
+                qtyentry.insert(0,r[4])
+                mrpentry.insert(0,r[3])
+                catentry.insert(0,r[2])
+                codeentry.configure(state=DISABLED)
+                flag=1
                 
 
             searchbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
