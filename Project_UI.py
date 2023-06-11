@@ -265,7 +265,7 @@ EmpUser.place(x = 35, y = 150)
 entryEmp = customtkinter.CTkEntry(master=Employee,
                                width=200, height=25, corner_radius=10)
 entryEmp.place(x = 170, y = 165)
-
+entryEmp.bind('<Return>',lambda e:entryPasse.focus_set())
 #Customer Password and textfield
 EmpPass = customtkinter.CTkLabel(master=Employee, text="PASSWORD:", width=120, height=50,
                                 font=("Century Gothic", 16), corner_radius=8)
@@ -273,6 +273,7 @@ EmpPass.place(x = 35, y = 225)
 entryPasse = customtkinter.CTkEntry(master=Employee, show = "*",
                                width=200, height=25, corner_radius=10)
 entryPasse.place(x = 170, y = 240)
+entryPasse.bind('<Return>',lambda e:EmployeeLogin())
 
 #login Button
 LoginEmp = customtkinter.CTkButton(master=Employee, text="LOGIN", fg_color="#ed6d31", command=EmployeeLogin,
@@ -307,13 +308,14 @@ AdminUser.place(x = 35, y = 150)
 entryAdmin = customtkinter.CTkEntry(master=Admin, width=200,
                                     height=25, corner_radius=10)
 entryAdmin.place(x = 170, y = 165)
-
+entryAdmin.bind('<Return>',lambda e:entryPassA.focus_set())
 #Customer Password and textfield
 AdminPass = customtkinter.CTkLabel(master=Admin, text="PASSWORD:", width=150,
                                     height=50, font=("Century Gothic", 16), corner_radius=8)
 AdminPass.place(x = 35, y = 225)
 entryPassA = customtkinter.CTkEntry(master=Admin, width=200, height=25, corner_radius=10, show = "*")
 entryPassA.place(x = 170, y = 240)
+entryPassA.bind('<Return>',lambda e:AdminLogin())
 
 #login Button
 LoginAdmin = customtkinter.CTkButton(master=Admin, text="LOGIN", fg_color="#ed6d31",
