@@ -27,7 +27,7 @@ class errpopup:
                 errdetails.configure(image=left)
                 if height<=300:
                     r.update()
-                    r.geometry('300x'+str(height)+'+100+100')
+                    r.geometry('300x'+str(height))
                     detframe.configure(height=fheight)
                     r.after(5,show(e))
                 status='backward'
@@ -37,7 +37,7 @@ class errpopup:
                 errdetails.configure(image=down)
                 if height>=250:
                     r.update()
-                    r.geometry('300x'+str(height)+'+100+100')
+                    r.geometry('300x'+str(height))
                     detframe.configure(height=fheight)
                     r.after(5,show(e))
                 status = 'forward'

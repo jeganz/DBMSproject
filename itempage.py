@@ -473,6 +473,38 @@ class itempage:
 
             dark_title_bar(r)
             r.mainloop()
+
+        def outofstockf():
+            r=Toplevel()
+            r.geometry('500x500')
+            r.title('Add new employee')
+
+            img=ImageTk.PhotoImage(Image.open('outofstockform.png'))
+            bg=customtkinter.CTkLabel(r,text='',image=img)
+            bg.place(x=0,y=0)
+
+            st = ttk.Style()
+            st.theme_use('clam')
+            st.configure("Treeview", font=('Century Gothic', 11),background='#D9D9D9',rowheight=30,) # Modify the font of the body
+            st.configure("Treeview.Heading", font=('Century Gothic', 13,'bold underline'),background='#E5E5E5') # Modify the font of the headings
+            st.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
+            st.map('Treeview', background=[('selected', '#ed6d31')])
+
+            myt = ttk.Treeview(r,columns=("id","name",'Price'),height=9)
+            myt.column("#0",width=50,minwidth=50)
+            myt.column('id',width=90,anchor=W)
+            myt.column('name',width=140,anchor=W)
+            myt.column('Price',width=120,anchor=W)
+
+            myt.heading('#0',text='Sl.no')
+            myt.heading('name',text='Product Name',anchor=W)
+            myt.heading('id',text='Code',anchor=W)
+            myt.heading('Price',text='MRP',anchor=W)
+
+            myt.place(x=50,y=180)
+
+            dark_title_bar(r)
+            r.mainloop()
         def buttons(text,x,y,img1,img2,command):
             def enter(e):
                 addempbut.configure(text_color='#ed6d31',border_color='#ed6d31',image=img2)
@@ -500,13 +532,4 @@ class itempage:
 
         outofstock=ImageTk.PhotoImage(Image.open("outofstock.png").resize((30,30)))
         outofstock2=ImageTk.PhotoImage(Image.open("outofstock2.png").resize((30,30)))
-        buttons('Out of Stock',480,405,outofstock,outofstock2,delitem)
-
-        # delitemicon=ImageTk.PhotoImage(Image.open("delitemicon.png").resize((30,30)))
-        # delitemicon2=ImageTk.PhotoImage(Image.open("delitemicon2.png").resize((30,30)))
-        # buttons('Delete Product',610,405,delitemicon,delitemicon2,delitem)
-
-
-        # itemframe.mainloop()
-
-
+        buttons('Out of Stock',480,405,outofstock,outofstock2,outofstockf)

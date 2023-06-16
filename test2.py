@@ -1,3 +1,4 @@
+from time import sleep
 from tkinter import *
 from tkinter import ttk
 import customtkinter
@@ -34,15 +35,31 @@ err=customtkinter.CTkFrame(bg,width=370,height=250,bg_color='#d9d9d9',fg_color='
 
 erricon=customtkinter.CTkLabel(err,image=errimg,compound=TOP,text='error',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 erricon.place(relx=.5,y=70,anchor=CENTER)
-
-errmsg=customtkinter.CTkLabel(err,text='Given image is not CTkImage but. Image can not be scaled on HighDPI displays, use CTkImage instead.',
-                              text_color='red',fg_color='green',font=('Century Gothic', 12),anchor='w',wraplength=300)
-errmsg.place(relx=.5,y=170,anchor=CENTER)
-
 def showmore(e):
-    print("hi")
+    for i in range(60):
+        sleep(.0005)
+        r.update()
+        errmsgframe.configure(height=i)
+        okbut.place(relx=.5,y=150+i,anchor=CENTER)
+errmsgframe=customtkinter.CTkFrame(err,width=290,height=0,bg_color='#d9d9d9',fg_color='#d9d9d9')
+errmsgframe.place(x=185,y=170,anchor=CENTER)
+def change(e):
+    if okbut.winfo_x()==70:
+        okbut.place(x=180,y=150)
+    else:
+        okbut.place(x=70,y=150,anchor=NW)
 
-show=customtkinter.CTkLabel(err,compound=RIGHT,text='error',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+okbut=customtkinter.CTkButton(err,text='OK')
+okbut.place(x=70,y=150,anchor=NW)
+okbut.bind("<Enter>",change)
+
+errmsg=customtkinter.CTkLabel(errmsgframe,text='Given image is not CTkImage but. Image can not be scaled on HighDPI displays, use CTkImage instead.',
+                              text_color='red',fg_color='#d9d9d9',font=('Century Gothic', 12),anchor='w',wraplength=300)
+errmsg.place(x=0,y=0)
+
+
+
+show=customtkinter.CTkLabel(err,compound=RIGHT,text='show more',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 show.place(relx=.5,y=120,anchor=CENTER)
 show.bind("<Button-1>",showmore)
 err.place(x=65,y=230)
@@ -166,6 +183,7 @@ def leave(e):
 nameentry=customtkinter.CTkEntry(bg,width=305,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',placeholder_text='ENTER PRODUCT CODE',
                                 bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black',)
 nameentry.place(x=75,y=190)
+nameentry.bind('<Return>',lambda e:print("entered"))
 l=customtkinter.CTkLabel(bg,text=' SEARCH ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
 l.place(x=83,y=182)
 def placeall():
