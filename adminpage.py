@@ -572,9 +572,9 @@ class adminpage:
             def delconfirm():
                 id=searchentry.get()
                 con,cur=create_connection()
-                # strsql="update item set name='"+inameentry.get()+"',category='"+catentry.get()+"'"\
-                #         ",price="+mrpentry.get()+",stock="+qtyentry.get()+" where barcode='"+id+"';"
-                # cur.execute(strsql)
+                strsql=f"update employee set  empid={identry.get()},name='{nameentry.get()}',pass='{passentry.get()}',"\
+                    f"admin='{adminbut.get()}',salary={salentry.get()},phone_no='{phnoentry.get()}',city='{cityentry.get()}',department='{deptentry.get()}' where empid='"+id+"';"
+                cur.execute(strsql)
                 con.commit()
                 con.close()
                 updatelist()
@@ -646,7 +646,6 @@ class adminpage:
                 cur.execute(strsql)
                 r=cur.fetchone()
                 con.close()
-                print(r)
                 if r != None:
                     placeall()
                     nameentry.insert(0,r[1])
@@ -681,7 +680,7 @@ class adminpage:
             
             addempbut=customtkinter.CTkButton(employeeframe,text=text,font=('Century Gothic', 13),
                                             fg_color='#d1d1d1',text_color='black',border_color='black',
-                                            border_width=2,image=addempicon,command=command)
+                                            border_width=2,image=img1,command=command)
             addempbut.place(x=x,y=y)
             addempbut.bind('<Enter>',enter)
             addempbut.bind('<Leave>',leave)
@@ -694,9 +693,9 @@ class adminpage:
         delempicon2=ImageTk.PhotoImage(Image.open("delempicon2.png").resize((30,30)))
         buttons('Delete Employee',180,405,delempicon,delempicon2,delemp)
 
-        moditemicon=ImageTk.PhotoImage(Image.open("moditemicon.png").resize((30,30)))
-        moditemicon2=ImageTk.PhotoImage(Image.open("moditemicon2.png").resize((30,30)))
-        buttons('Modify Employee',360,405,moditemicon,moditemicon2,modemp)
+        modempicon=ImageTk.PhotoImage(Image.open("moditemicon.png").resize((30,30)))
+        modempicon2=ImageTk.PhotoImage(Image.open("moditemicon2.png").resize((30,30)))
+        buttons('Modify Employee',360,405,modempicon,modempicon2,modemp)
 
 
         dark_title_bar(root)

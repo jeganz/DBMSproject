@@ -58,7 +58,6 @@ def create_connection():
 
 #con,cur=create_connection()
 customtkinter.set_appearance_mode("light")
-
 def CustomerChange():
     MainChange()
     customerpage.custframe(root,create_connection)
