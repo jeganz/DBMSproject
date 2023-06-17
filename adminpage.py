@@ -8,7 +8,7 @@ import itempage
 import profilepage
 
 class adminpage:
-    def __init__(self,root, userID,create_connection):
+    def __init__(self,root,user,create_connection,):
         def dark_title_bar(window):
             window.update()
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20
@@ -115,7 +115,7 @@ class adminpage:
 
         profileframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
         profileframe.place(x=230,y=27.5)
-        profilepage.profileframe(profileframe)
+        profilepage.profileframe(profileframe,user)
 
         #itempage
         itemframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')

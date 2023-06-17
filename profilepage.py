@@ -5,10 +5,10 @@ from PIL import Image, ImageTk
 import ctypes as ct
 
 class profileframe:
-    def __init__(self,profileframe):
+    def __init__(self,profileframe,L):
         profilepic =ImageTk.PhotoImage(Image.open("profileicon.png").resize((100,100)))
         customtkinter.CTkLabel(profileframe,image=profilepic,text="").place(x=620,y=30)
-        namel=customtkinter.CTkLabel(profileframe,text='JAMES BOND',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 18,'bold'))
+        namel=customtkinter.CTkLabel(profileframe,text=L[1],text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 18,'bold'))
         namel.place(x=250,y=50)
         namel1=customtkinter.CTkLabel(profileframe,text='ID',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
         namel1.place(x=105,y=150)
@@ -26,11 +26,11 @@ class profileframe:
         named3.place(x=275,y=250)
         named4=customtkinter.CTkLabel(profileframe,text=':',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
         named4.place(x=275,y=300)
-        named1=customtkinter.CTkLabel(profileframe,text='007',text_color='black',fg_color='#E5E5E5')
+        named1=customtkinter.CTkLabel(profileframe,text=str(L[0]),text_color='black',fg_color='#E5E5E5')
         named1.place(x=290,y=150)
-        named2=customtkinter.CTkLabel(profileframe,text='MI6',text_color='black',fg_color='#E5E5E5')
+        named2=customtkinter.CTkLabel(profileframe,text=L[7],text_color='black',fg_color='#E5E5E5')
         named2.place(x=290,y=200)
-        named3=customtkinter.CTkLabel(profileframe,text='12',text_color='black',fg_color='#E5E5E5')
+        named3=customtkinter.CTkLabel(profileframe,text=str(L[4]),text_color='black',fg_color='#E5E5E5')
         named3.place(x=290,y=250)
-        named4=customtkinter.CTkLabel(profileframe,text='85877587575',text_color='black',fg_color='#E5E5E5')
+        named4=customtkinter.CTkLabel(profileframe,text=L[5],text_color='black',fg_color='#E5E5E5')
         named4.place(x=290,y=300)

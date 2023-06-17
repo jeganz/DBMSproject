@@ -5,6 +5,7 @@ import customtkinter
 from PIL import Image, ImageTk
 import ctypes as ct
 import mysql.connector 
+import errorpage
 
 class itempage:
     def __init__(self,itemframe,create_connection):
@@ -168,12 +169,16 @@ class itempage:
             catentry.bind('<FocusOut>',leave)
             def addempsubmit():
                 # data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
-                L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
-                con,cur=create_connection()
-                strsql="insert into item values(%s,%s,%s,%s,%s)"
-                cur.execute(strsql,L)
-                con.commit()
-                con.close()
+                try:
+                    L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
+                    con,cur=create_connection()
+                    strsql="insert into item values(%s,%s,%s,%s,%s)"
+                    cur.execute(strsql,L)
+                    con.commit()
+                    con.close()
+                except Exception as e:
+                    errorpage.errpopup(e)
+
                 updatelist()
                 r.destroy()
             addempbut=customtkinter.CTkButton(bg,text='SUBMIT',font=('Century Gothic', 15,'bold'),

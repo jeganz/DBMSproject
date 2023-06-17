@@ -92,7 +92,7 @@ def AdminLogin():
         InvUser.place(relx = 0.5, y = 300,anchor=CENTER)
     elif r[2] == L[1] and r[3]=="yes":
        MainChange()
-       adminpage.adminpage(root,L[0],create_connection)
+       adminpage.adminpage(root,r,create_connection)
     elif r[2] == L[1] and r[3]=="no":
        NotAdmin.place(relx = 0.5, y = 300,anchor=CENTER)
     else:
@@ -117,7 +117,7 @@ def EmployeeLogin():
         InvUserE.place(relx = 0.5, y = 300,anchor=CENTER)
     elif r[2] == L[1]:
        MainChange()
-       empframe.empframe(root,create_connection)
+       empframe.empframe(root,create_connection,r)
     else:
         entryPasse.configure(border_color='red')
         LoginEmp.focus_set()

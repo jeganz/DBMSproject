@@ -6,7 +6,7 @@ import ctypes as ct
 
 class errpopup:
     def __init__(self,msg) -> None:
-        r=Tk()
+        r=Toplevel()
         warn=ImageTk.PhotoImage(Image.open('warning icon.png').resize((80,80)))
         down=ImageTk.PhotoImage(Image.open('down.png'))
         left=ImageTk.PhotoImage(Image.open('left.png'))
@@ -68,5 +68,3 @@ class errpopup:
                                 font=('Century Gothic', 12,'bold')).place(relx=.5,rely=.88,anchor=CENTER)
 
         r.mainloop()
-
-errpopup('Given image is not CTkImage but. Image can not be scaled on HighDPI displays, use CTkImage instead.')
