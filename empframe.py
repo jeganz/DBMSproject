@@ -4,7 +4,7 @@ from tkinter import ttk
 import customtkinter
 from PIL import Image, ImageTk
 import ctypes as ct
-
+import errorpage
 
 
 class empframe:
@@ -132,7 +132,7 @@ class empframe:
         def fetchdata():
             data.clear()
             con,cur=create_connection()
-            strsql="select * from item"
+            strsql="select * from item where category='"+user[7]+"';"
             cur.execute(strsql)
             r=cur.fetchall()
             con.commit()
@@ -271,14 +271,17 @@ class empframe:
             catentry.bind('<FocusOut>',leave)
             def addempsubmit():
                 # data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
-                L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
-                con,cur=create_connection()
-                strsql="insert into item values(%s,%s,%s,%s,%s)"
-                cur.execute(strsql,L)
-                con.commit()
-                con.close()
-                updatelist()
-                r.destroy()
+                if catentry.get() == user[7] or catentry.get() == 'NIL':
+                    L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
+                    con,cur=create_connection()
+                    strsql="insert into item values(%s,%s,%s,%s,%s)"
+                    cur.execute(strsql,L)
+                    con.commit()
+                    con.close()
+                    updatelist()
+                    r.destroy()
+                else:
+                    errorpage.errpopup('You are not authorised to edit data of other department')
             addempbut=customtkinter.CTkButton(bg,text='SUBMIT',font=('Century Gothic', 15,'bold'),
                                             fg_color='#ed6d31',text_color='black',bg_color='#d9d9d9',
                                             height=35,hover_color='#f7a681',command=addempsubmit)
