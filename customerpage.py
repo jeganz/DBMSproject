@@ -7,14 +7,14 @@ import ctypes as ct
 
 
 
-class empframe:
+class custframe:
      def __init__(self,root,create_connection):
-        root = Tk()
+        # root = Tk()
 
         # Adjust size
-        root.geometry("1000x500+100+100")
-        root.resizable(False, False)
-        root.title("MK Mart")
+        # root.geometry("1000x500+100+100")
+        # root.resizable(False, False)
+        # root.title("MK Mart")
         def dark_title_bar(window):
             window.update()
             DWMWA_USE_IMMERSIVE_DARK_MODE = 20
@@ -45,14 +45,14 @@ class empframe:
         def profileclick():
             button1.configure(state='disabled')
             button3.configure(state='normal')
-            profileframe.place(x=230,y=27.5)
+            categframe.place(x=230,y=27.5)
             itemframe.place_forget()
 
         def itemclick():
             button1.configure(state='normal')
             button3.configure(state='disabled')
             itemframe.place(x=230,y=27.5)
-            profileframe.place_forget()
+            categframe.place_forget()
             
 
         #admin login page
@@ -102,35 +102,113 @@ class empframe:
 
         #profile page
 
-        profileframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
-        profilepic =ImageTk.PhotoImage(Image.open("profileicon.png").resize((100,100)))
-        customtkinter.CTkLabel(profileframe,image=profilepic,text="").place(x=620,y=30)
-        namel=customtkinter.CTkLabel(profileframe,text='JAMES BOND',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 18,'bold'))
-        namel.place(x=250,y=50)
-        namel1=customtkinter.CTkLabel(profileframe,text='ID',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        namel1.place(x=105,y=150)
-        namel2=customtkinter.CTkLabel(profileframe,text='Department',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        namel2.place(x=105,y=200)
-        namel3=customtkinter.CTkLabel(profileframe,text='Salary',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        namel3.place(x=105,y=250)
-        namel4=customtkinter.CTkLabel(profileframe,text='Phone No',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        namel4.place(x=105,y=300)
-        named1=customtkinter.CTkLabel(profileframe,text=':',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        named1.place(x=275,y=150)
-        named2=customtkinter.CTkLabel(profileframe,text=':',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        named2.place(x=275,y=200)
-        named3=customtkinter.CTkLabel(profileframe,text=':',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        named3.place(x=275,y=250)
-        named4=customtkinter.CTkLabel(profileframe,text=':',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 15,'bold'))
-        named4.place(x=275,y=300)
-        named1=customtkinter.CTkLabel(profileframe,text='007',text_color='black',fg_color='#E5E5E5')
-        named1.place(x=290,y=150)
-        named2=customtkinter.CTkLabel(profileframe,text='MI6',text_color='black',fg_color='#E5E5E5')
-        named2.place(x=290,y=200)
-        named3=customtkinter.CTkLabel(profileframe,text='12',text_color='black',fg_color='#E5E5E5')
-        named3.place(x=290,y=250)
-        named4=customtkinter.CTkLabel(profileframe,text='85877587575',text_color='black',fg_color='#E5E5E5')
-        named4.place(x=290,y=300)
+        categframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
+        categframe.place(x=230,y=27.5)
+
+        heading=customtkinter.CTkLabel(categframe,text='Item Details',font=('Century Gothic', 18,'bold','underline'),width=100,text_color='black')
+        heading.place(x=14,y=10)
+        deptlist=list()
+        con,cur=create_connection()
+        strsql="select distinct category  from item"
+        cur.execute(strsql)
+        r=cur.fetchall()
+        con.commit()
+        con.close()
+        for i in r:
+            deptlist.append(i)
+        depdata=list()
+        def fetchdeptdata(dept):
+            depdata.clear()
+            con,cur=create_connection()
+            strsql="select * from item where category='"+dept+"';"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            con.commit()
+            con.close()
+            for i in r:
+                depdata.append(i)
+        # fetchdata()
+
+        style = ttk.Style()
+        style.theme_use('clam')
+        style.configure("Treeview", font=('Century Gothic', 11),background='#E5E5E5',rowheight=30,) # Modify the font of the body
+        style.configure("Treeview.Heading", font=('Century Gothic', 13,'bold underline'),background='#E5E5E5') # Modify the font of the headings
+        style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
+        style.map('Treeview', background=[('selected', '#ed6d31')])
+
+        mytr = ttk.Treeview(categframe,columns=("id","name",'Category','Stock','Price'))
+        mytr.column("#0",width=50,minwidth=50)
+        mytr.column('id',width=90,anchor=W)
+        mytr.column('name',width=140,anchor=W)
+        mytr.column('Category',width=120,anchor=W)
+        mytr.column('Stock',width=120,anchor=W)
+        mytr.column('Price',width=120,anchor=W)
+
+        mytr.heading('#0',text='Sl.no')
+        mytr.heading('name',text='Product Name',anchor=W)
+        mytr.heading('id',text='Code',anchor=W)
+        mytr.heading('Category',text='Category',anchor=W)
+        mytr.heading('Stock',text='Stock',anchor=W)
+        mytr.heading('Price',text='MRP',anchor=W)
+
+        def updatedeptlist(e):
+            fetchdeptdata(deptbox.get())
+            for x in mytr.get_children():
+                mytr.delete(x)
+            count=0
+            for i in depdata:
+                mytr.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
+                count+=1
+        mytr.place(x=10,y=45)
+        search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((20,20)))
+        searchentry=customtkinter.CTkEntry(categframe,width=305,height=30,font=('Century Gothic',12),fg_color='#E5E5E5',placeholder_text='ENTER NAME OR CODE',
+                                        bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black',)
+        searchentry.place(x=75+230,y=9)
+        l1=customtkinter.CTkLabel(categframe,text=' SEARCH ',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 10),height=15)
+        l1.place(x=83+230,y=1)
+
+        def refresh(e):
+            for x in mytr.get_children():
+                mytr.delete(x)
+            count=0
+            con,cur=create_connection()
+            strsql=''
+            if searchentry.get().isnumeric():
+                strsql="select * from item where barcode like '"+searchentry.get()+"%' and category='"+deptbox.get()+"';"
+            else:
+                strsql="select * from item where name like '"+searchentry.get()+"%'and category='"+deptbox.get()+"';"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            count=0
+            for i in r:
+                mytr.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
+                count+=1
+            con.commit()
+            con.close()
+
+        searchentry.bind('<KeyRelease>',refresh)
+
+        def searchemp():
+            pass
+
+        searchbut=customtkinter.CTkButton(categframe,text='',font=('Century Gothic', 15,'bold'),
+                                            fg_color='#ed6d31',text_color='black',image=search,width=35,
+                                            height=30,hover_color='#f7a681',bg_color='#E5E5E5',command=searchemp)
+        searchbut.place(x=385+230,y=9)
+        def enter(e):
+            searchentry.configure(border_color='#ed6d31')
+            l1.configure(text_color='#ed6d31')
+        def leave(e):
+            searchentry.configure(border_color='black')
+            l1.configure(text_color='black')
+        searchentry.bind('<FocusIn>',enter)
+        searchentry.bind('<FocusOut>',leave)
+
+
+        deptbox=ttk.Combobox(categframe,width=25,font=('Century Gothic', 8),values=deptlist)
+        deptbox.place(x=120,y=15)
+        deptbox.bind('<<ComboboxSelected>>',updatedeptlist)
+
         #itempage
         itemframe=customtkinter.CTkFrame(sidebar,width=750,height=450,corner_radius=10,fg_color='#E5E5E5')
         itemframe.place(x=230,y=27.5)
@@ -138,8 +216,17 @@ class empframe:
         heading=customtkinter.CTkLabel(itemframe,text='Item Details',font=('Century Gothic', 18,'bold','underline'),width=100,text_color='black')
         heading.place(x=14,y=10)
 
-        data=[['abc',1,'stationary',12,87],['bcd',2,'vegtable',5,75],['drf',3,'vegetable',7,120]
-            ]
+        data=list()
+        def fetchdata():
+            data.clear()
+            con,cur=create_connection()
+            strsql="select * from item"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            con.commit()
+            con.close()
+            for i in r:
+                data.append(i)
 
         style = ttk.Style()
         style.theme_use('clam')
@@ -164,11 +251,12 @@ class empframe:
         mytree.heading('Price',text='MRP',anchor=W)
 
         def updatelist():
+            fetchdata()
             for x in mytree.get_children():
                 mytree.delete(x)
             count=0
             for i in data:
-                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[3],i[4]))
+                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
                 count+=1
         updatelist()
         mytree.place(x=10,y=45)
@@ -183,13 +271,20 @@ class empframe:
             for x in mytree.get_children():
                 mytree.delete(x)
             count=0
-            for i in data:
-                if nameentry.get().isnumeric() and nameentry.get() in str(i[1]):
-                    mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[3],i[4]))
-                    count+=1
-                elif nameentry.get() in i[0]:
-                    mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[3],i[4]))
-                    count+=1
+            con,cur=create_connection()
+            strsql=''
+            if nameentry.get().isnumeric():
+                strsql="select * from item where barcode like '"+nameentry.get()+"%';"
+            else:
+                strsql="select * from item where name like '"+nameentry.get()+"%';"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            count=0
+            for i in r:
+                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
+                count+=1
+            con.commit()
+            con.close()
 
         nameentry.bind('<KeyRelease>',refresh)
 
@@ -209,7 +304,7 @@ class empframe:
         nameentry.bind('<FocusIn>',enter)
         nameentry.bind('<FocusOut>',leave)
 
-        root.mainloop()
+        # root.mainloop()
 
 
-empframe(None,None)
+# empframe(None,None)

@@ -128,8 +128,17 @@ class empframe:
         heading=customtkinter.CTkLabel(itemframe,text='Item Details',font=('Century Gothic', 18,'bold','underline'),width=100,text_color='black')
         heading.place(x=14,y=10)
 
-        data=[['abc',1,'stationary',12,87],['bcd',2,'vegtable',5,75],['drf',3,'vegetable',7,120]
-            ]
+        data=list()
+        def fetchdata():
+            data.clear()
+            con,cur=create_connection()
+            strsql="select * from item"
+            cur.execute(strsql)
+            r=cur.fetchall()
+            con.commit()
+            con.close()
+            for i in r:
+                data.append(i)
 
         style = ttk.Style()
         style.theme_use('clam')
@@ -154,11 +163,12 @@ class empframe:
         mytree.heading('Price',text='MRP',anchor=W)
 
         def updatelist():
+            fetchdata()
             for x in mytree.get_children():
                 mytree.delete(x)
             count=0
             for i in data:
-                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[1],i[0],i[2],i[3],i[4]))
+                mytree.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[2],i[4],i[3]))
                 count+=1
         updatelist()
         mytree.place(x=10,y=40)
@@ -260,7 +270,13 @@ class empframe:
             catentry.bind('<FocusIn>',enter)
             catentry.bind('<FocusOut>',leave)
             def addempsubmit():
-                data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
+                # data.append([nameentry.get(),int(codeentry.get()),catentry.get(),qtyentry.get(),mrpentry.get()])
+                L = (codeentry.get(),nameentry.get(),catentry.get(),float(mrpentry.get()),int(qtyentry.get()))
+                con,cur=create_connection()
+                strsql="insert into item values(%s,%s,%s,%s,%s)"
+                cur.execute(strsql,L)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             addempbut=customtkinter.CTkButton(bg,text='SUBMIT',font=('Century Gothic', 15,'bold'),
@@ -273,7 +289,7 @@ class empframe:
         def delitem():
             r=Toplevel()
             r.geometry('500x500')
-            r.title('Add new employee')
+            r.title('Remove an item')
 
             img=ImageTk.PhotoImage(Image.open('delitemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -297,10 +313,12 @@ class empframe:
             rl=customtkinter.CTkLabel(infoemp,text='REMOVE THIS ITEM ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
             
             def delconfirm():
-                id=int(nameentry.get())
-                for i in data:
-                    if id in i:
-                        data.remove(i)
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="delete from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             def delcancel():
@@ -334,20 +352,22 @@ class empframe:
             def searchemp():
                 for i in infoemp.winfo_children():
                     i.place_forget()
-                id=int(nameentry.get())
-                flag=0
-                for i in data:
-                    if id in i:
-                        labels('NAME',1,6,i[0])
-                        labels('CODE',1,36,i[1])
-                        labels('PRICE',1,66,i[3])
-                        labels('CATEG',1,96,i[2])
-                        eksbut.place(x=310,y=122)
-                        tickbut.place(x=260,y=122)
-                        rl.place(x=1,y=126)
-                        flag=1
-                if flag==0:
-                    notfound.place(x=80,y=10)
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="select * from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                r=cur.fetchone()
+                con.close()
+                if r != None:
+                    labels('NAME',1,6,r[1])
+                    labels('CODE',1,36,r[0])
+                    labels('PRICE',1,66,r[3])
+                    labels('CATEG',1,96,r[2])
+                    eksbut.place(x=310,y=122)
+                    tickbut.place(x=260,y=122)
+                    rl.place(x=1,y=126)
+                else:
+                    notfound.place(relx=0.5,y=70,anchor=CENTER)
 
                 
                 infoemp.place(x=75,y=270)
@@ -365,9 +385,9 @@ class empframe:
         def moditem():
             r=Toplevel()
             r.geometry('500x500')
-            r.title('Add new employee')
+            r.title('Modify an item')
 
-            img=ImageTk.PhotoImage(Image.open('delitemform.png'))
+            img=ImageTk.PhotoImage(Image.open('moditemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
             tick=ImageTk.PhotoImage(Image.open('tickicon.png').resize((25,25)))
             eks=ImageTk.PhotoImage(Image.open('eksicon.png').resize((25,25)))
@@ -466,10 +486,13 @@ class empframe:
             rl=customtkinter.CTkLabel(infoemp,text='SAVE THE CHANGES ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def delconfirm():
-                id=int(searchentry.get())
-                for i in data:
-                    if id in i:
-                        data.remove(i)
+                id=searchentry.get()
+                con,cur=create_connection()
+                strsql="update item set name='"+inameentry.get()+"',category='"+catentry.get()+"'"\
+                        ",price="+mrpentry.get()+",stock="+qtyentry.get()+" where barcode='"+id+"';"
+                cur.execute(strsql)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             def delcancel():
@@ -484,7 +507,7 @@ class empframe:
                                                 height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
 
 
-            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Employee not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def enter(e):
                 searchentry.configure(border_color='#ed6d31')
@@ -515,24 +538,33 @@ class empframe:
                 eksbut.place(x=320,y=190)
                 tickbut.place(x=270,y=190)
                 
-                infoemp.place(x=65,y=230)
+                
 
             def searchitem():
+                inameentry.delete(0,END)
+                codeentry.delete(0,END)
+                qtyentry.delete(0,END)
+                mrpentry.delete(0,END)
+                catentry.delete(0,END)
                 for i in infoemp.winfo_children():
                     i.place_forget()
-                id=int(searchentry.get())
-                flag=0
-                for i in data:
-                    if id == i[1]:
-                        placeall()
-                        inameentry.insert(0,i[0])
-                        codeentry.insert(0,i[1])
-                        qtyentry.insert(0,i[3])
-                        mrpentry.insert(0,i[4])
-                        catentry.insert(0,i[2])
-                        codeentry.configure(state=DISABLED)
-                        flag=1
-                
+                id=searchentry.get()
+                con,cur=create_connection()
+                strsql="select * from item where barcode='"+id+"';"
+                cur.execute(strsql)
+                r=cur.fetchone()
+                con.close()
+                if r != None:
+                    placeall()
+                    inameentry.insert(0,r[1])
+                    codeentry.insert(0,r[0])
+                    qtyentry.insert(0,r[4])
+                    mrpentry.insert(0,r[3])
+                    catentry.insert(0,r[2])
+                    codeentry.configure(state=DISABLED)
+                else:
+                    notfound.place(relx=.5,y=70,anchor=CENTER)
+            infoemp.place(x=65,y=230)    
 
             searchbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
                                                 fg_color='#ed6d31',text_color='black',image=search,width=40,
@@ -541,6 +573,58 @@ class empframe:
 
             searchentry.bind('<FocusIn>',enter)
             searchentry.bind('<FocusOut>',leave)
+
+            dark_title_bar(r)
+            r.mainloop()
+
+        def outofstockf():
+            r=Toplevel()
+            r.geometry('500x500')
+            r.title('Out of Stock')
+
+            img=ImageTk.PhotoImage(Image.open('outofstockform.png'))
+            bg=customtkinter.CTkLabel(r,text='',image=img)
+            bg.place(x=0,y=0)
+
+            osdata=list()
+            def ffetchdata():
+                osdata.clear()
+                con,cur=create_connection()
+                strsql="select * from item where stock<1;"
+                cur.execute(strsql)
+                r=cur.fetchall()
+                con.commit()
+                con.close()
+                for i in r:
+                    osdata.append(i)
+
+            st = ttk.Style()
+            st.theme_use('clam')
+            st.configure("Treeview", font=('Century Gothic', 11),background='#D9D9D9',rowheight=30,) # Modify the font of the body
+            st.configure("Treeview.Heading", font=('Century Gothic', 13,'bold underline'),background='#E5E5E5') # Modify the font of the headings
+            st.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
+            st.map('Treeview', background=[('selected', '#ed6d31')])
+
+            myt = ttk.Treeview(r,columns=("id","name",'Price'),height=9)
+            myt.column("#0",width=50,minwidth=50)
+            myt.column('id',width=90,anchor=W)
+            myt.column('name',width=140,anchor=W)
+            myt.column('Price',width=120,anchor=W)
+
+            myt.heading('#0',text='Sl.no')
+            myt.heading('name',text='Product Name',anchor=W)
+            myt.heading('id',text='Code',anchor=W)
+            myt.heading('Price',text='MRP',anchor=W)
+            def uupdatelist():
+                ffetchdata()
+                for x in myt.get_children():
+                    myt.delete(x)
+                count=0
+                for i in osdata:
+                    myt.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[3]))
+                    count+=1
+            uupdatelist()
+            myt.place(x=50,y=180)
 
             dark_title_bar(r)
             r.mainloop()
@@ -571,7 +655,7 @@ class empframe:
 
         outofstock=ImageTk.PhotoImage(Image.open("outofstock.png").resize((30,30)))
         outofstock2=ImageTk.PhotoImage(Image.open("outofstock2.png").resize((30,30)))
-        buttons('Out of Stock',480,405,outofstock,outofstock2,delitem)
+        buttons('Out of Stock',480,405,outofstock,outofstock2,outofstockf)
 
 
 

@@ -186,7 +186,7 @@ class itempage:
         def delitem():
             r=Toplevel()
             r.geometry('500x500')
-            r.title('Add new employee')
+            r.title('Remove an item')
 
             img=ImageTk.PhotoImage(Image.open('delitemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -282,7 +282,7 @@ class itempage:
         def moditem():
             r=Toplevel()
             r.geometry('500x500')
-            r.title('Add new employee')
+            r.title('Modify an item')
 
             img=ImageTk.PhotoImage(Image.open('moditemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -477,11 +477,24 @@ class itempage:
         def outofstockf():
             r=Toplevel()
             r.geometry('500x500')
-            r.title('Add new employee')
+            r.title('Out of Stock')
 
             img=ImageTk.PhotoImage(Image.open('outofstockform.png'))
             bg=customtkinter.CTkLabel(r,text='',image=img)
             bg.place(x=0,y=0)
+
+            osdata=list()
+            def ffetchdata():
+                osdata.clear()
+                con,cur=create_connection()
+                strsql="select * from item where stock<1;"
+                cur.execute(strsql)
+                r=cur.fetchall()
+                con.commit()
+                con.close()
+                for i in r:
+                    osdata.append(i)
+
 
             st = ttk.Style()
             st.theme_use('clam')
@@ -501,6 +514,16 @@ class itempage:
             myt.heading('id',text='Code',anchor=W)
             myt.heading('Price',text='MRP',anchor=W)
 
+            def uupdatelist():
+                ffetchdata()
+                for x in myt.get_children():
+                    myt.delete(x)
+                count=0
+                for i in osdata:
+                    myt.insert(parent='',iid=count,text=count+1,index=END,values=(i[0],i[1],i[3]))
+                    count+=1
+            uupdatelist()
+            
             myt.place(x=50,y=180)
 
             dark_title_bar(r)

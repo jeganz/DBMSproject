@@ -427,7 +427,252 @@ class adminpage:
 
             dark_title_bar(r)
             r.mainloop()
+        def modemp():
+            r=Toplevel()
+            r.geometry('500x500')
+            r.title('Modify an item')
 
+            img=ImageTk.PhotoImage(Image.open('modempform.png'))
+            search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
+            tick=ImageTk.PhotoImage(Image.open('tickicon.png').resize((25,25)))
+            eks=ImageTk.PhotoImage(Image.open('eksicon.png').resize((25,25)))
+            warning=ImageTk.PhotoImage(Image.open('warningicon.png'))
+
+            bg=customtkinter.CTkLabel(r,text='',image=img)
+            bg.place(x=0,y=0)
+
+            infoemp=customtkinter.CTkFrame(bg,width=370,height=250,bg_color='#d9d9d9',fg_color='#d9d9d9')
+
+            def enter(e):
+                nameentry.configure(border_color='#ed6d31')
+                l1.configure(text_color='#ed6d31')
+            def leave(e):
+                nameentry.configure(border_color='black')
+                l1.configure(text_color='black')
+
+
+            nameentry=customtkinter.CTkEntry(bg,width=350,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l1=customtkinter.CTkLabel(bg,text=' NAME ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            nameentry.bind('<FocusIn>',enter)
+            nameentry.bind('<FocusOut>',leave)
+
+            def enter(e):
+                identry.configure(border_color='#ed6d31')
+                l2.configure(text_color='#ed6d31')
+            def leave(e):
+                identry.configure(border_color='black')
+                l2.configure(text_color='black')
+
+
+            identry=customtkinter.CTkEntry(bg,width=170,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l2=customtkinter.CTkLabel(bg,text=' ID ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            identry.bind('<FocusIn>',enter)
+            identry.bind('<FocusOut>',leave)
+
+            def enter(e):
+                salentry.configure(border_color='#ed6d31')
+                l3.configure(text_color='#ed6d31')
+            def leave(e):
+                salentry.configure(border_color='black')
+                l3.configure(text_color='black')
+
+
+            salentry=customtkinter.CTkEntry(bg,width=175,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l3=customtkinter.CTkLabel(bg,text=' SALARY ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            salentry.bind('<FocusIn>',enter)
+            salentry.bind('<FocusOut>',leave)
+
+            def enter(e):
+                deptentry.configure(border_color='#ed6d31')
+                l4.configure(text_color='#ed6d31')
+            def leave(e):
+                deptentry.configure(border_color='black')
+                l4.configure(text_color='black')
+
+
+            deptentry=customtkinter.CTkEntry(bg,width=350,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l4=customtkinter.CTkLabel(bg,text=' DEPARTMENT ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            deptentry.bind('<FocusIn>',enter)
+            deptentry.bind('<FocusOut>',leave)
+
+            def enter(e):
+                cityentry.configure(border_color='#ed6d31')
+                l5.configure(text_color='#ed6d31')
+            def leave(e):
+                cityentry.configure(border_color='black')
+                l5.configure(text_color='black')
+
+
+            cityentry=customtkinter.CTkEntry(bg,width=350,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l5=customtkinter.CTkLabel(bg,text=' CITY ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            cityentry.bind('<FocusIn>',enter)
+            cityentry.bind('<FocusOut>',leave)
+
+            def enter(e):
+                phnoentry.configure(border_color='#ed6d31')
+                l6.configure(text_color='#ed6d31')
+            def leave(e):
+                phnoentry.configure(border_color='black')
+                l6.configure(text_color='black')
+
+
+            phnoentry=customtkinter.CTkEntry(bg,width=250,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l6=customtkinter.CTkLabel(bg,text=' PH NO ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            phnoentry.bind('<FocusIn>',enter)
+            phnoentry.bind('<FocusOut>',leave)
+
+            adminbut=customtkinter.CTkCheckBox(bg,text='ADMIN',height=35,width=50,text_color='black',font=('Century Gothic', 15),
+                                            bg_color='#d9d9d9',checkbox_height=30,checkbox_width=30,border_color='black',checkmark_color='black',
+                                            hover_color='#d9d9d9', onvalue="yes", offvalue="no")
+            
+
+            def enter(e):
+                passentry.configure(border_color='#ed6d31')
+                l7.configure(text_color='#ed6d31')
+            def leave(e):
+                passentry.configure(border_color='black')
+                l7.configure(text_color='black')
+
+
+            passentry=customtkinter.CTkEntry(bg,width=200,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black')
+            
+            l7=customtkinter.CTkLabel(bg,text=' PASSWORD ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            
+
+            passentry.bind('<FocusIn>',enter)
+            passentry.bind('<FocusOut>',leave)
+
+            rl=customtkinter.CTkLabel(infoemp,text='SAVE THE CHANGES ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+
+            def delconfirm():
+                id=searchentry.get()
+                con,cur=create_connection()
+                # strsql="update item set name='"+inameentry.get()+"',category='"+catentry.get()+"'"\
+                #         ",price="+mrpentry.get()+",stock="+qtyentry.get()+" where barcode='"+id+"';"
+                # cur.execute(strsql)
+                con.commit()
+                con.close()
+                updatelist()
+                r.destroy()
+            def delcancel():
+                for i in bg.winfo_children():
+                    if i not in (searchentry,l,searchbut):
+                        i.place_forget()
+            tickbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
+                                                fg_color='#ed6d31',text_color='black',image=tick,width=40,
+                                                height=35,hover_color='#f7a681',bg_color='#d9d9d9',command=delconfirm)
+
+            eksbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
+                                                fg_color='black',image=eks,width=40,
+                                                height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
+
+
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+
+            def enter(e):
+                searchentry.configure(border_color='#ed6d31')
+                l.configure(text_color='#ed6d31')
+            def leave(e):
+                searchentry.configure(border_color='black')
+                l.configure(text_color='black')
+
+
+            searchentry=customtkinter.CTkEntry(bg,width=305,height=35,font=('Century Gothic',12),fg_color='#D9D9D9',placeholder_text='ENTER EMPLOYEE ID',
+                                            bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black',)
+            searchentry.place(x=75,y=175)
+            l=customtkinter.CTkLabel(bg,text=' SEARCH ',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 10),height=20)
+            l.place(x=83,y=167)
+            def placeall():
+                
+                nameentry.place(x=75,y=210+5)
+                l1.place(x=83,y=202+5)
+                identry.place(x=75,y=255+5)
+                l2.place(x=83,y=247+5)
+                salentry.place(x=250,y=255+5)
+                l3.place(x=258,y=247+5)
+                deptentry.place(x=75,y=300+5)
+                cityentry.place(x=75,y=345+5)
+                l5.place(x=83,y=337+5)
+                phnoentry.place(x=75,y=390+5)
+                l6.place(x=83,y=382+5)
+                passentry.place(x=75,y=435+5)
+                l7.place(x=83,y=427+5)
+                l4.place(x=83,y=292+5)
+                # rl.place(x=12,y=190)
+                adminbut.place(x=335,y=390+5)
+
+                eksbut.place(x=380,y=440)
+                tickbut.place(x=330,y=440)
+                
+
+            def searchitem():
+                nameentry.delete(0,END)
+                identry.delete(0,END)
+                salentry.delete(0,END)
+                deptentry.delete(0,END)
+                cityentry.delete(0,END)
+                phnoentry.delete(0,END)
+                passentry.delete(0,END)
+                for i in infoemp.winfo_children():
+                    i.place_forget()
+                id=searchentry.get()
+                con,cur=create_connection()
+                strsql="select * from employee where empid='"+id+"';"
+                cur.execute(strsql)
+                r=cur.fetchone()
+                con.close()
+                print(r)
+                if r != None:
+                    placeall()
+                    nameentry.insert(0,r[1])
+                    identry.insert(0,r[0])
+                    salentry.insert(0,r[4])
+                    deptentry.insert(0,r[7])
+                    cityentry.insert(0,r[6])
+                    phnoentry.insert(0,r[5])
+                    passentry.insert(0,r[2])
+                    if r[3] == 'yes':
+                        adminbut.select()
+                    identry.configure(state=DISABLED)
+                else:
+                    notfound.place(relx=.5,y=70,anchor=CENTER)
+            infoemp.place(x=65,y=230)    
+
+            searchbut=customtkinter.CTkButton(bg,text='',font=('Century Gothic', 15,'bold'),
+                                                fg_color='#ed6d31',text_color='black',image=search,width=40,
+                                                height=35,hover_color='#f7a681',bg_color='#d9d9d9',command=searchitem)
+            searchbut.place(x=385,y=175)
+
+            searchentry.bind('<FocusIn>',enter)
+            searchentry.bind('<FocusOut>',leave)
+
+            dark_title_bar(r)
+            r.mainloop()
         def buttons(text,x,y,img1,img2,command):
             def enter(e):
                 addempbut.configure(text_color='#ed6d31',border_color='#ed6d31',image=img2)
@@ -448,6 +693,10 @@ class adminpage:
         delempicon=ImageTk.PhotoImage(Image.open("delempicon.png").resize((30,30)))
         delempicon2=ImageTk.PhotoImage(Image.open("delempicon2.png").resize((30,30)))
         buttons('Delete Employee',180,405,delempicon,delempicon2,delemp)
+
+        moditemicon=ImageTk.PhotoImage(Image.open("moditemicon.png").resize((30,30)))
+        moditemicon2=ImageTk.PhotoImage(Image.open("moditemicon2.png").resize((30,30)))
+        buttons('Modify Employee',360,405,moditemicon,moditemicon2,modemp)
 
 
         dark_title_bar(root)

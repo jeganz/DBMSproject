@@ -6,6 +6,7 @@ import ctypes as ct
 import mysql.connector
 import adminpage
 import empframe
+import customerpage
 
 #connection to mysql
 def create_connection():
@@ -59,8 +60,8 @@ def create_connection():
 customtkinter.set_appearance_mode("light")
 
 def CustomerChange():
-    Customer.place(x = 525, y = 25)
-    Main.place_forget()
+    MainChange()
+    customerpage.custframe(root,create_connection)
 
 def EmpChange():
     Employee.place(x = 525, y = 25)
