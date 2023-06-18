@@ -75,6 +75,7 @@ class itempage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Add new item')
+            r.resizable(False,False)
 
             bgimg=ImageTk.PhotoImage(Image.open('additemform.png'))
 
@@ -192,6 +193,7 @@ class itempage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Remove an item')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('delitemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -288,6 +290,7 @@ class itempage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Modify an item')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('moditemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -483,6 +486,7 @@ class itempage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Out of Stock')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('outofstockform.png'))
             bg=customtkinter.CTkLabel(r,text='',image=img)

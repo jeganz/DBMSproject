@@ -54,3 +54,4 @@ VALUES
     (60003, 'Milk', 'Groceries', 2, 30),
     (60004, 'Eggs', 'Groceries', 2, 40),
     (60005, 'Pasta', 'Groceries', 4, 20);
+

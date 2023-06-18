@@ -181,6 +181,7 @@ class adminpage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Add new employee')
+            r.resizable(False,False)
 
             bgimg=ImageTk.PhotoImage(Image.open('addempform.png'))
 
@@ -336,6 +337,7 @@ class adminpage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Add new employee')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('delempform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -431,6 +433,7 @@ class adminpage:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Modify an item')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('modempform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))

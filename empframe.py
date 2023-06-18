@@ -177,6 +177,7 @@ class empframe:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Add new item')
+            r.resizable(False,False)
 
             bgimg=ImageTk.PhotoImage(Image.open('additemform.png'))
 
@@ -293,6 +294,7 @@ class empframe:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Remove an item')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('delitemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -336,7 +338,7 @@ class empframe:
                                                 height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
             
 
-            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Employee not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def enter(e):
                 nameentry.configure(border_color='#ed6d31')
@@ -362,13 +364,16 @@ class empframe:
                 r=cur.fetchone()
                 con.close()
                 if r != None:
-                    labels('NAME',1,6,r[1])
-                    labels('CODE',1,36,r[0])
-                    labels('PRICE',1,66,r[3])
-                    labels('CATEG',1,96,r[2])
-                    eksbut.place(x=310,y=122)
-                    tickbut.place(x=260,y=122)
-                    rl.place(x=1,y=126)
+                    if r[2]==user[7]:
+                        labels('NAME',1,6,r[1])
+                        labels('CODE',1,36,r[0])
+                        labels('PRICE',1,66,r[3])
+                        labels('CATEG',1,96,r[2])
+                        eksbut.place(x=310,y=122)
+                        tickbut.place(x=260,y=122)
+                        rl.place(x=1,y=126)
+                    else:
+                        errorpage.errpopup("You can't Delete item of other Departments")
                 else:
                     notfound.place(relx=0.5,y=70,anchor=CENTER)
 
@@ -389,6 +394,7 @@ class empframe:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Modify an item')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('moditemform.png'))
             search=ImageTk.PhotoImage(Image.open('searchicon.png').resize((25,25)))
@@ -558,13 +564,16 @@ class empframe:
                 r=cur.fetchone()
                 con.close()
                 if r != None:
-                    placeall()
-                    inameentry.insert(0,r[1])
-                    codeentry.insert(0,r[0])
-                    qtyentry.insert(0,r[4])
-                    mrpentry.insert(0,r[3])
-                    catentry.insert(0,r[2])
-                    codeentry.configure(state=DISABLED)
+                    if r[2]==user[7]:
+                        placeall()
+                        inameentry.insert(0,r[1])
+                        codeentry.insert(0,r[0])
+                        qtyentry.insert(0,r[4])
+                        mrpentry.insert(0,r[3])
+                        catentry.insert(0,r[2])
+                        codeentry.configure(state=DISABLED)
+                    else:
+                        errorpage.errpopup("You can't Modify item of other Departments")
                 else:
                     notfound.place(relx=.5,y=70,anchor=CENTER)
             infoemp.place(x=65,y=230)    
@@ -584,6 +593,7 @@ class empframe:
             r=Toplevel()
             r.geometry('500x500')
             r.title('Out of Stock')
+            r.resizable(False,False)
 
             img=ImageTk.PhotoImage(Image.open('outofstockform.png'))
             bg=customtkinter.CTkLabel(r,text='',image=img)
@@ -593,7 +603,7 @@ class empframe:
             def ffetchdata():
                 osdata.clear()
                 con,cur=create_connection()
-                strsql="select * from item where stock<1;"
+                strsql="select * from item where stock<1 and category='"+user[7]+"';"
                 cur.execute(strsql)
                 r=cur.fetchall()
                 con.commit()
