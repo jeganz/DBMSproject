@@ -136,7 +136,7 @@ class custframe:
         style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
         style.map('Treeview', background=[('selected', '#ed6d31')])
 
-        mytr = ttk.Treeview(categframe,columns=("id","name",'Category','Stock','Price'))
+        mytr = ttk.Treeview(categframe,columns=("id","name",'Category','Stock','Price'),height=12)
         mytr.column("#0",width=50,minwidth=50)
         mytr.column('id',width=90,anchor=W)
         mytr.column('name',width=140,anchor=W)
@@ -164,8 +164,8 @@ class custframe:
         searchentry=customtkinter.CTkEntry(categframe,width=305,height=30,font=('Century Gothic',12),fg_color='#E5E5E5',placeholder_text='ENTER NAME OR CODE',
                                         bg_color='#D9D9D9',text_color='black',border_width=2,border_color='black',)
         searchentry.place(x=75+230,y=9)
-        l1=customtkinter.CTkLabel(categframe,text=' SEARCH ',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 10),height=15)
-        l1.place(x=83+230,y=1)
+        l2=customtkinter.CTkLabel(categframe,text=' SEARCH ',text_color='black',fg_color='#E5E5E5',font=('Century Gothic', 10),height=15)
+        l2.place(x=83+230,y=1)
 
         def refresh(e):
             for x in mytr.get_children():
@@ -197,10 +197,10 @@ class custframe:
         searchbut.place(x=385+230,y=9)
         def enter(e):
             searchentry.configure(border_color='#ed6d31')
-            l1.configure(text_color='#ed6d31')
+            l2.configure(text_color='#ed6d31')
         def leave(e):
             searchentry.configure(border_color='black')
-            l1.configure(text_color='black')
+            l2.configure(text_color='black')
         searchentry.bind('<FocusIn>',enter)
         searchentry.bind('<FocusOut>',leave)
 
@@ -235,7 +235,7 @@ class custframe:
         style.layout("Treeview", [('Treeview.treearea', {'sticky': 'nswe'})]) 
         style.map('Treeview', background=[('selected', '#ed6d31')])
 
-        mytree = ttk.Treeview(itemframe,columns=("id","name",'Category','Stock','Price'))
+        mytree = ttk.Treeview(itemframe,columns=("id","name",'Category','Stock','Price'),height=12)
         mytree.column("#0",width=50,minwidth=50)
         mytree.column('id',width=90,anchor=W)
         mytree.column('name',width=140,anchor=W)

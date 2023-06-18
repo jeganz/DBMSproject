@@ -6,6 +6,7 @@ import ctypes as ct
 import mysql.connector
 import itempage
 import profilepage
+import errorpage
 
 class adminpage:
     def __init__(self,root,user,create_connection,):
@@ -316,16 +317,23 @@ class adminpage:
             passentry.bind('<FocusOut>',leave)
 
             def addempsubmit():
-                # data.append([nameentry.get(),int(identry.get()),deptentry.get()])
-                L = (int(identry.get()),nameentry.get(), passentry.get(),adminbut.get(),float(salentry.get()),phnoentry.get()
-                     ,cityentry.get(),deptentry.get())
-                con,cur=create_connection()
-                strsql="insert into employee values(%s,%s,%s,%s,%s,%s,%s,%s)"
-                cur.execute(strsql,L)
-                con.commit()
-                con.close()
-                updatelist()
-                r.destroy()
+                try:
+                    L = (int(identry.get()),nameentry.get(), passentry.get(),adminbut.get(),float(salentry.get()),phnoentry.get()
+                        ,cityentry.get(),deptentry.get())
+                    con,cur=create_connection()
+                    strsql="insert into employee values(%s,%s,%s,%s,%s,%s,%s,%s)"
+                    cur.execute(strsql,L)
+                    con.commit()
+                    con.close()
+                    updatelist()
+                    r.destroy()
+                except Exception as e:
+                    if "Duplicate entry" in str(e):
+                        errorpage.errpopup("Employee with same ID already exits")
+                    elif salentry.get() in str(e):
+                         errorpage.errpopup("Enter a proper value for SALARY")
+                    else:
+                        errorpage.errpopup(e)
             addempbut=customtkinter.CTkButton(bg,text='SUBMIT',font=('Century Gothic', 15,'bold'),
                                             fg_color='#ed6d31',text_color='black',bg_color='#d9d9d9',
                                             height=35,hover_color='#f7a681',command=addempsubmit)
@@ -364,10 +372,12 @@ class adminpage:
             rl=customtkinter.CTkLabel(infoemp,text='REMOVE THIS EMPLOYEE ?',text_color='black',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
             
             def delconfirm():
-                id=int(nameentry.get())
-                for i in data:
-                    if id in i:
-                        data.remove(i)
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="delete from employee where empid="+id+";"
+                cur.execute(strsql)
+                con.commit()
+                con.close()
                 updatelist()
                 r.destroy()
             def delcancel():
@@ -401,19 +411,22 @@ class adminpage:
             def searchemp():
                 for i in infoemp.winfo_children():
                     i.place_forget()
-                id=int(nameentry.get())
-                flag=0
-                for i in data:
-                    if id in i:
-                        labels('NAME',1,6,i[0])
-                        labels('ID',1,36,i[1])
-                        labels('SALARY',1,66,'')
-                        labels('DEPT',1,96,i[2])
-                        eksbut.place(x=310,y=122)
-                        tickbut.place(x=260,y=122)
-                        rl.place(x=1,y=126)
-                        flag=1
-                if flag==0:
+                id=nameentry.get()
+                con,cur=create_connection()
+                strsql="select * from employee where empid="+id+";"
+                cur.execute(strsql)
+
+                i=cur.fetchone()
+                con.close()
+                if i != None:
+                    labels('NAME',1,6,i[1])
+                    labels('ID',1,36,i[0])
+                    labels('SALARY',1,66,i[4])
+                    labels('DEPT',1,96,i[7])
+                    eksbut.place(x=310,y=122)
+                    tickbut.place(x=260,y=122)
+                    rl.place(x=1,y=126)
+                else:
                     notfound.place(x=80,y=10)
 
                 
@@ -595,7 +608,7 @@ class adminpage:
                                                 height=35,hover_color='gray',bg_color='#d9d9d9',command=delcancel)
 
 
-            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Item not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
+            notfound=customtkinter.CTkLabel(infoemp,image=warning,compound=TOP,text='Employee not Found',text_color='red',fg_color='#D9D9D9',font=('Century Gothic', 15,'bold'))
 
             def enter(e):
                 searchentry.configure(border_color='#ed6d31')

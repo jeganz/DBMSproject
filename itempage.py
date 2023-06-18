@@ -178,7 +178,14 @@ class itempage:
                     con.commit()
                     con.close()
                 except Exception as e:
-                    errorpage.errpopup(e)
+                    if "Duplicate entry" in str(e):
+                        errorpage.errpopup("Item with same ID already exits")
+                    elif mrpentry.get() in str(e):
+                         errorpage.errpopup("Enter a proper value for PRICE")
+                    elif qtyentry.get() in str(e):
+                         errorpage.errpopup("Enter a proper value for STOCK")
+                    else:
+                        errorpage.errpopup(e)
 
                 updatelist()
                 r.destroy()
